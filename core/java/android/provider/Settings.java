@@ -5531,6 +5531,12 @@ public final class Settings {
         public static final String RETICKER_COLORED = "reticker_colored";
 
         /**
+         * Double tap on lockscreen to sleep
+         * @hide
+         */
+        public static final String DOUBLE_TAP_SLEEP_LOCKSCREEN = "double_tap_sleep_lockscreen";
+
+        /**
          * These are all public system settings
          *
          * @hide
