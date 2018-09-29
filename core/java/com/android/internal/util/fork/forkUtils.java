@@ -31,6 +31,11 @@ import android.view.WindowManagerGlobal;
 import android.view.InputDevice;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
+import android.os.SystemProperties;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+
+import java.util.List;
 
 import com.android.internal.statusbar.IStatusBarService;
 
@@ -118,5 +123,17 @@ public class forkUtils {
                 }
             }
         }
+    }
+
+    public static boolean hasNavbarByDefault(Context context) {
+        boolean needsNav = context.getResources().getBoolean(
+                com.android.internal.R.bool.config_showNavigationBar);
+        String navBarOverride = SystemProperties.get("qemu.hw.mainkeys");
+        if ("1".equals(navBarOverride)) {
+            needsNav = false;
+        } else if ("0".equals(navBarOverride)) {
+            needsNav = true;
+        }
+        return needsNav;
     }
 }
