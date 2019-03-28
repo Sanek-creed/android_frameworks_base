@@ -15,5 +15,7 @@
         <item>com.google.android.youtube</item>
     </string-array>
 
+    <!-- Smart charging battery percentage -->
+    <integer name="config_smartChargingBatteryLevel">80</integer>
 
 </resources>
