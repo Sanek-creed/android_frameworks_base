@@ -1304,4 +1304,7 @@
     <dimen name="net_traffic_txt_img_padding">2dp</dimen>
     <dimen name="net_traffic_single_text_size_x">14dp</dimen>
 
+    <!-- Bottom margin size when fingerprint in display is active -->
+    <dimen name="keyguard_indication_margin_bottom_fingerprint_in_display">@dimen/keyguard_indication_margin_bottom</dimen>
+
 </resources>
