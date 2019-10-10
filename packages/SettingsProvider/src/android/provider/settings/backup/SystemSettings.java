@@ -90,5 +90,8 @@ public class SystemSettings {
         Settings.System.VIBRATE_ON_DISCONNECT,
         Settings.System.COLOR_BUCKET_OVERLAY,
         Settings.System.DOZE_ON_CHARGE,
+        Settings.System.PULSE_AMBIENT_LIGHT,
+        Settings.System.AMBIENT_NOTIFICATION_LIGHT_ENABLED,
+        Settings.System.AMBIENT_NOTIFICATION_LIGHT,
     };
 }
