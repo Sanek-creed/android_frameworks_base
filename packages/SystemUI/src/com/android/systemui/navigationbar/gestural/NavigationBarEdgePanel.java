@@ -55,7 +55,7 @@ import com.android.systemui.Dependency;
 import com.android.systemui.R;
 import com.android.systemui.animation.Interpolators;
 import com.android.systemui.plugins.NavigationEdgeBackPlugin;
-//import com.android.systemui.statusbar.VibratorHelper;
+import com.android.systemui.statusbar.VibratorHelper;
 
 import java.io.PrintWriter;
 
@@ -133,7 +133,7 @@ public class NavigationBarEdgePanel extends View implements NavigationEdgeBackPl
             = new PathInterpolator(1.0f / RUBBER_BAND_AMOUNT_APPEAR, 1.0f, 1.0f, 1.0f);
 
     private final WindowManager mWindowManager;
-//    private final VibratorHelper mVibratorHelper;
+    private final VibratorHelper mVibratorHelper;
 
     /**
      * The paint the arrow is drawn with
@@ -208,7 +208,9 @@ public class NavigationBarEdgePanel extends View implements NavigationEdgeBackPl
     private boolean mDragSlopPassed;
     private boolean mArrowsPointLeft;
     private float mMaxTranslation;
+    private float mLongSwipeThreshold;
     private boolean mTriggerBack;
+    private boolean mTriggerLongSwipe;
     private float mPreviousTouchTranslation;
     private float mTotalTouchDelta;
     private float mVerticalTranslation;
@@ -223,6 +225,8 @@ public class NavigationBarEdgePanel extends View implements NavigationEdgeBackPl
 
     private final Handler mHandler = new Handler();
     private final Runnable mFailsafeRunnable = this::onFailsafe;
+
+    private boolean mIsLongSwipeEnabled;
 
     private DynamicAnimation.OnAnimationEndListener mSetGoneEndListener
             = new DynamicAnimation.OnAnimationEndListener() {
@@ -280,7 +284,7 @@ public class NavigationBarEdgePanel extends View implements NavigationEdgeBackPl
         super(context);
 
         mWindowManager = context.getSystemService(WindowManager.class);
-//        mVibratorHelper = Dependency.get(VibratorHelper.class);
+        mVibratorHelper = Dependency.get(VibratorHelper.class);
 
         mDensity = context.getResources().getDisplayMetrics().density;
 
@@ -420,6 +424,14 @@ public class NavigationBarEdgePanel extends View implements NavigationEdgeBackPl
         mWindowManager.addView(this, mLayoutParams);
     }
 
+    @Override
+    public void setLongSwipeEnabled(boolean enabled) {
+        mLongSwipeThreshold = enabled ? MathUtils.min(
+                mDisplaySize.x * 0.5f, mLayoutParams.width * 2.5f) : 0.0f;
+        mIsLongSwipeEnabled = mLongSwipeThreshold > 0;
+        setTriggerLongSwipe(mIsLongSwipeEnabled && mTriggerLongSwipe, false /* animated */);
+    }
+
     /**
      * Adjusts the sampling rect to conform to the actual visible bounding box of the arrow.
      */
@@ -479,8 +491,10 @@ public class NavigationBarEdgePanel extends View implements NavigationEdgeBackPl
                     Log.d(DEBUG_MISSING_GESTURE_TAG,
                             "NavigationBarEdgePanel ACTION_UP, mTriggerBack=" + mTriggerBack);
                 }
-                if (mTriggerBack) {
-                    triggerBack();
+                if (mTriggerLongSwipe) {
+                    triggerBack(true);
+                } else if (mTriggerBack) {
+                    triggerBack(false);
                 } else {
                     cancelBack();
                 }
@@ -519,6 +533,11 @@ public class NavigationBarEdgePanel extends View implements NavigationEdgeBackPl
         float x = (polarToCartX(mCurrentAngle) * mArrowLength);
         float y = (polarToCartY(mCurrentAngle) * mArrowLength);
         Path arrowPath = calculatePath(x,y);
+        if (mTriggerLongSwipe) {
+            arrowPath.addPath(calculatePath(x,y),
+                    mArrowThickness * 2.0f * (mIsLeftPanel ? 1 : -1), 0.0f);
+        }
+
         if (mShowProtection) {
             canvas.drawPath(arrowPath, mProtectionPaint);
         }
@@ -613,19 +632,19 @@ public class NavigationBarEdgePanel extends View implements NavigationEdgeBackPl
         return mCurrentTranslation;
     }
 
-    private void triggerBack() {
-        mBackCallback.triggerBack();
+    private void triggerBack(boolean triggerLongSwipe) {
+        mBackCallback.triggerBack(triggerLongSwipe);
 
         if (mVelocityTracker == null) {
             mVelocityTracker = VelocityTracker.obtain();
         }
         mVelocityTracker.computeCurrentVelocity(1000);
         // Only do the extra translation if we're not already flinging
-//        boolean isSlow = Math.abs(mVelocityTracker.getXVelocity()) < 500;
-//        if (isSlow
-//                || SystemClock.uptimeMillis() - mVibrationTime >= GESTURE_DURATION_FOR_CLICK_MS) {
-//            mVibratorHelper.vibrate(VibrationEffect.EFFECT_CLICK);
-//        }
+        boolean isSlow = Math.abs(mVelocityTracker.getXVelocity()) < 500;
+        if (isSlow
+                || SystemClock.uptimeMillis() - mVibrationTime >= GESTURE_DURATION_FOR_CLICK_MS) {
+            mVibratorHelper.vibrate(VibrationEffect.EFFECT_CLICK);
+        }
 
         // Let's also snap the angle a bit
         if (mAngleOffset > -4) {
@@ -692,6 +711,7 @@ public class NavigationBarEdgePanel extends View implements NavigationEdgeBackPl
             Log.d(DEBUG_MISSING_GESTURE_TAG, "reset mTriggerBack=false");
         }
         setTriggerBack(false /* triggerBack */, false /* animated */);
+        setTriggerLongSwipe(false /* triggerLongSwipe */, false /* animated */);
         setDesiredTranslation(0, false /* animated */);
         setCurrentTranslation(0);
         updateAngle(false /* animate */);
@@ -716,12 +736,13 @@ public class NavigationBarEdgePanel extends View implements NavigationEdgeBackPl
             }
         }
         mPreviousTouchTranslation = touchTranslation;
+        boolean isLongSwipe = touchTranslation > mLongSwipeThreshold;
 
         // Apply a haptic on drag slop passed
         if (!mDragSlopPassed && touchTranslation > mSwipeThreshold) {
             mDragSlopPassed = true;
-//            mVibratorHelper.vibrate(VibrationEffect.EFFECT_TICK);
-//            mVibrationTime = SystemClock.uptimeMillis();
+            mVibratorHelper.vibrate(VibrationEffect.EFFECT_TICK);
+            mVibrationTime = SystemClock.uptimeMillis();
 
             // Let's show the arrow and animate it in!
             mDisappearAmount = 0.0f;
@@ -778,6 +799,12 @@ public class NavigationBarEdgePanel extends View implements NavigationEdgeBackPl
                     + ", x=" + x
                     + ", mStartX=" + mStartX);
         }
+
+        if (mIsLongSwipeEnabled) {
+            boolean triggerLongSwipe = triggerBack && isLongSwipe;
+            setTriggerLongSwipe(triggerLongSwipe, true /* animated */);
+        }
+
         setTriggerBack(triggerBack, true /* animated */);
 
         if (!mTriggerBack) {
@@ -858,6 +885,18 @@ public class NavigationBarEdgePanel extends View implements NavigationEdgeBackPl
     private void setTriggerBack(boolean triggerBack, boolean animated) {
         if (mTriggerBack != triggerBack) {
             mTriggerBack = triggerBack;
+            mAngleAnimation.cancel();
+            updateAngle(animated);
+            // Whenever the trigger back state changes the existing translation animation should be
+            // cancelled
+            mTranslationAnimation.cancel();
+        }
+    }
+
+    private void setTriggerLongSwipe(boolean triggerLongSwipe, boolean animated) {
+        if (mTriggerLongSwipe != triggerLongSwipe) {
+            mTriggerLongSwipe = triggerLongSwipe;
+            mVibratorHelper.vibrate(VibrationEffect.EFFECT_CLICK);
             mAngleAnimation.cancel();
             updateAngle(animated);
             // Whenever the trigger back state changes the existing translation animation should be
