@@ -5459,6 +5459,12 @@ public final class Settings {
         public static final String SHOW_VOLTE_ICON = "volte_icon";
 
         /**
+         * Whether to show VoWiFi icon or not
+         * @hide
+         */
+        public static final String VOWIFI_ICON = "vowifi_icon";
+
+        /**
          * Show app volume rows in volume panel
          * @hide
          */
