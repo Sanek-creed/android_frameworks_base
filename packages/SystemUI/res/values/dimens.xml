@@ -1621,4 +1621,9 @@
     <item name="communal_source_height_percentage" format="float" type="dimen">0.80</item>
 
     <dimen name="drag_and_drop_icon_size">70dp</dimen>
+
+    <!-- Additional gesture navbar lengths -->
+    <dimen name="navigation_home_handle_width_medium">110dp</dimen>
+    <dimen name="navigation_home_handle_width_long">140dp</dimen>
+
 </resources>
