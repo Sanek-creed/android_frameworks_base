@@ -5149,6 +5149,9 @@ public final class Settings {
         @Readable
         public static final String SIP_ALWAYS = "SIP_ALWAYS";
 
+        /** @hide */
+        public static final String BACK_GESTURE_HAPTIC = "back_gesture_haptic";
+
         /**
          * One of the sip call options: Only if destination is a SIP address.
          * @hide
@@ -5351,6 +5354,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(SHOW_BATTERY_PERCENT);
             PRIVATE_SETTINGS.add(DISPLAY_COLOR_MODE);
             PRIVATE_SETTINGS.add(DISPLAY_COLOR_MODE_VENDOR_HINT);
+            PRIVATE_SETTINGS.add(BACK_GESTURE_HAPTIC);
         }
 
         /**
