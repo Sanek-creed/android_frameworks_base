@@ -41,6 +41,8 @@ import com.android.systemui.dump.DumpManager;
 import com.android.systemui.flags.FeatureFlags;
 import com.android.systemui.plugins.statusbar.StatusBarStateController;
 import com.android.systemui.statusbar.policy.BatteryController;
+import com.android.systemui.statusbar.policy.ConfigurationController;
+import com.android.systemui.statusbar.policy.DevicePostureController;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -54,8 +56,7 @@ import javax.inject.Inject;
  */
 @SysUISingleton
 public class DozeParameters implements
-        com.android.systemui.plugins.statusbar.DozeParameters,
-        Dumpable, ConfigurationController.ConfigurationListener,
+        ConfigurationController.ConfigurationListener,
         StatusBarStateController.StateListener,
         com.android.systemui.plugins.statusbar.DozeParameters, Dumpable {
 
@@ -217,6 +218,17 @@ public class DozeParameters implements
 
     public boolean isQuickPickupEnabled() {
         return mAmbientDisplayConfiguration.quickPickupSensorEnabled(UserHandle.USER_CURRENT);
+    }
+
+    /**
+     * Checks if always on is available and enabled for the current user
+     * without notification pulse - used to check what to do if aod notification pulse stops
+     * @return {@code true} if enabled and available.
+     * @hide
+     */
+    public boolean getAlwaysOnAfterAmbientLight() {
+        return mAmbientDisplayConfiguration.alwaysOnEnabledSetting(UserHandle.USER_CURRENT) ||
+                mAmbientDisplayConfiguration.alwaysOnChargingEnabled(UserHandle.USER_CURRENT);
     }
 
     /**
