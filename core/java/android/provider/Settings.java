@@ -5366,8 +5366,8 @@ public final class Settings {
 
         /**
          * Pulse ambient lights color mode
-         * 0 - Default
-         * 1 - Accent
+         * 0 - Default (Accent)
+         * 1 - Wallpaper
          * 2 - Notification
          * 3 - Custom color
          * @hide
@@ -5401,6 +5401,7 @@ public final class Settings {
          * Notification pulse repeats count - 0 means go by timeout
          * @hide
          */
+        @Readable
         public static final String NOTIFICATION_PULSE_REPEATS = "ambient_notification_light_repeats";
 
         /**
