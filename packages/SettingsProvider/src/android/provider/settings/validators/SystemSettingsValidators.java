@@ -219,7 +219,6 @@ public class SystemSettingsValidators {
                     }
                 });
         VALIDATORS.put(System.DOZE_ON_CHARGE, BOOLEAN_VALIDATOR);
-        VALIDATORS.put(System.BATTERY_LIGHT_REALLYFULL_COLOR, ANY_STRING_VALIDATOR);
         VALIDATORS.put(System.NOTIFICATION_PULSE, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.AOD_NOTIFICATION_PULSE, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.NOTIFICATION_PULSE_COLOR_MODE, new InclusiveIntegerRangeValidator(0, 3));
