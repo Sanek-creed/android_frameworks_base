@@ -287,6 +287,10 @@ public class StatusBar extends SystemUI implements
             "system:" + Settings.System.SCREEN_BRIGHTNESS_MODE;
     private static final String STATUS_BAR_BRIGHTNESS_CONTROL =
             "lineagesystem:" + LineageSettings.System.STATUS_BAR_BRIGHTNESS_CONTROL;
+    private static final String GAMING_MODE_ACTIVE =
+            "system:" + Settings.System.GAMING_MODE_ACTIVE;
+    private static final String GAMING_MODE_DISABLE_NOTIFICATION_ALERT =
+            "system:" + Settings.System.GAMING_MODE_DISABLE_NOTIFICATION_ALERT;
 
     private static final String BANNER_ACTION_CANCEL =
             "com.android.systemui.statusbar.banner_action_cancel";
@@ -998,6 +1002,8 @@ public class StatusBar extends SystemUI implements
         mTunerService.addTunable(this, FORCE_SHOW_NAVBAR);
         mTunerService.addTunable(this, SCREEN_BRIGHTNESS_MODE);
         mTunerService.addTunable(this, STATUS_BAR_BRIGHTNESS_CONTROL);
+        mTunerService.addTunable(this, GAMING_MODE_ACTIVE);
+        mTunerService.addTunable(this, GAMING_MODE_DISABLE_NOTIFICATION_ALERT);
 
         mDisplayManager = mContext.getSystemService(DisplayManager.class);
 
@@ -4373,6 +4379,20 @@ public class StatusBar extends SystemUI implements
         } else if (STATUS_BAR_BRIGHTNESS_CONTROL.equals(key)) {
             mBrightnessControl = TunerService.parseIntegerSwitch(newValue, false);
         }
+            case GAMING_MODE_ACTIVE:
+                boolean gamingModeActive = 
+                        TunerService.parseIntegerSwitch(newValue, false);
+                if (mPresenter != null) {
+                    mPresenter.setGamingModeActive(gamingModeActive);
+                }
+                break;
+            case GAMING_MODE_DISABLE_NOTIFICATION_ALERT:
+                boolean gamingModeNoAlert = 
+                        TunerService.parseIntegerSwitch(newValue, true);
+                if (mPresenter != null) {
+                    mPresenter.setGamingModeNoAlert(gamingModeNoAlert);
+                }
+                break;
     }
     // End Extra BaseStatusBarMethods.
 
