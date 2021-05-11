@@ -99,6 +99,7 @@ import com.android.wm.shell.legacysplitscreen.LegacySplitScreen;
 import com.android.wm.shell.startingsurface.StartingSurface;
 import com.google.android.systemui.NotificationLockscreenUserManagerGoogle;
 import com.google.android.systemui.smartspace.SmartSpaceController;
+import com.android.systemui.tuner.TunerService;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -204,7 +205,8 @@ public class StatusBarGoogle extends StatusBar {
             FeatureFlags featureFlags,
             KeyguardUnlockAnimationController keyguardUnlockAnimationController,
             UnlockedScreenOffAnimationController unlockedScreenOffAnimationController,
-            Optional<StartingSurface> startingSurfaceOptional) {
+            Optional<StartingSurface> startingSurfaceOptional,
+            TunerService tunerService) {
         super(
             context,
             notificationsController,
@@ -294,7 +296,9 @@ public class StatusBarGoogle extends StatusBar {
             featureFlags,
             keyguardUnlockAnimationController,
             unlockedScreenOffAnimationController,
-            startingSurfaceOptional);
+            startingSurfaceOptional,
+            tunerService);
+
     }
 
     @Override
