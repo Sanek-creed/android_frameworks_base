@@ -1588,7 +1588,7 @@ public class ZenModeHelperTest extends UiServiceTestCase {
                     NotificationManager.INTERRUPTION_FILTER_PRIORITY, true);
             // We need the package name to be something that's not "android" so there aren't any
             // existing rules under that package.
-            String id = mZenModeHelperSpy.addAutomaticZenRule("pkgname", zenRule, "test");
+            String id = mZenModeHelperSpy.addAutomaticZenRule("android", zenRule, "test");
             assertNotNull(id);
         }
         try {
@@ -1598,7 +1598,7 @@ public class ZenModeHelperTest extends UiServiceTestCase {
                     ZenModeConfig.toScheduleConditionId(new ScheduleInfo()),
                     new ZenPolicy.Builder().build(),
                     NotificationManager.INTERRUPTION_FILTER_PRIORITY, true);
-            String id = mZenModeHelperSpy.addAutomaticZenRule("pkgname", zenRule, "test");
+            String id = mZenModeHelperSpy.addAutomaticZenRule("android", zenRule, "test");
             fail("allowed too many rules to be created");
         } catch (IllegalArgumentException e) {
             // yay
