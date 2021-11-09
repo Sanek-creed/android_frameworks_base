@@ -97,6 +97,7 @@ public class UdfpsDialogMeasureAdapter {
         // Navbar + dialogMargin + buttonBar + textIndicator + spacerHeight = sensorDistFromBottom
         final int dialogMargin = getDialogMarginPx();
         final int displayHeight = getWindowBounds().height();
+        final Insets navbarInsets = getNavbarInsets();
         mBottomSpacerHeight = calculateBottomSpacerHeightForPortrait(
                 mSensorProps, displayHeight, textIndicatorHeight, buttonBarHeight,
                 dialogMargin);
