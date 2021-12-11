@@ -108,6 +108,7 @@ public class Clock extends TextView implements
     private static final int AM_PM_STYLE_GONE    = 2;
 
     private int mAmPmStyle = AM_PM_STYLE_GONE;
+    private final boolean mShowDark;
     private boolean mShowSeconds;
     private Handler mSecondsHandler;
 
@@ -131,6 +132,7 @@ public class Clock extends TextView implements
                 0, 0);
         try {
             mAmPmStyle = a.getInt(R.styleable.Clock_amPmStyle, mAmPmStyle);
+            mShowDark = a.getBoolean(R.styleable.Clock_showDark, true);
             mNonAdaptedColor = getCurrentTextColor();
         } finally {
             a.recycle();
@@ -200,6 +202,9 @@ public class Clock extends TextView implements
             Dependency.get(TunerService.class).addTunable(this,
                     CLOCK_SECONDS, CLOCK_STYLE, CLOCK_AUTO_HIDE);
             mCommandQueue.addCallback(this);
+            if (mShowDark) {
+                Dependency.get(DarkIconDispatcher.class).addDarkReceiver(this);
+            }
             mCurrentUserTracker.startTracking();
             mCurrentUserId = mCurrentUserTracker.getCurrentUserId();
         }
@@ -230,6 +235,9 @@ public class Clock extends TextView implements
             mAttached = false;
             Dependency.get(TunerService.class).removeTunable(this);
             mCommandQueue.removeCallback(this);
+            if (mShowDark) {
+                Dependency.get(DarkIconDispatcher.class).removeDarkReceiver(this);
+            }
             mCurrentUserTracker.stopTracking();
             handleTaskStackListener(false);
         }
