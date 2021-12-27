@@ -175,4 +175,8 @@
     <!-- A toast message shown after successfully deleting a screen recording [CHAR LIMIT=NONE] -->
     <string name="screenrecord_delete_description">Screen recording deleted</string>
 
+    <!-- VPN / Call strength icons in statusbar -->
+    <string name="status_bar_vpn">VPN</string>
+    <string name="status_bar_call_strength">Call strength</string>
+
 </resources>
