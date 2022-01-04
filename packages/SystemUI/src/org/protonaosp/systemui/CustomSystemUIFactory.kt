@@ -16,7 +16,6 @@
 
 package org.protonaosp.systemui
 
-import android.content.res.AssetManager
 import android.content.res.Resources
 import com.android.systemui.SystemUIFactory
 import com.android.systemui.theme.ThemeOverlayController
