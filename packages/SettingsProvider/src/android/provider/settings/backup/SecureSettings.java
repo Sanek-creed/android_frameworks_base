@@ -202,5 +202,6 @@ public class SecureSettings {
         Settings.Secure.MONET_ENGINE_LINEAR_LIGHTNESS,
         Settings.Secure.MONET_ENGINE_WHITE_LUMINANCE,
         Settings.Secure.SHOW_BACK_ARROW_GESTURE,
+        Settings.Secure.SECURE_LOCKSCREEN_QS_DISABLED,
     };
 }
