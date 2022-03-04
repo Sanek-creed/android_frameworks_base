@@ -34,13 +34,11 @@ public class PixelPropsUtils {
     private static final String DEVICE = "ro.aex.device";
 
     private static final Map<String, Object> propsToChangePixel6;
+    private static final String[] packagesToChangePixel6 = {
+            "com.google.android.gms"
+    };
 
     private static final Map<String, Object> propsToChangePixel5;
-    private static final String[] packagesToChangePixel5 = {
-            "com.google.android.tts",
-            "com.google.android.googlequicksearchbox",
-            "com.google.android.apps.recorder"
-    };
 
     private static final Map<String, Object> propsToChangePixelXL;
     private static final String[] packagesToChangePixelXL = {
@@ -127,10 +125,10 @@ public class PixelPropsUtils {
         }
         if ((packageName.startsWith("com.google.") && !Arrays.asList(packagesToKeep).contains(packageName))
                || Arrays.asList(extraPackagesToChange).contains(packageName)) {
-            Map<String, Object> propsToChange = propsToChangePixel6;
+            Map<String, Object> propsToChange = propsToChangePixel5;
 
-            if (Arrays.asList(packagesToChangePixel5).contains(packageName)) {
-                propsToChange = propsToChangePixel5;
+            if (Arrays.asList(packagesToChangePixel6).contains(packageName)) {
+                propsToChange = propsToChangePixel6;
             }
 
             if (Arrays.asList(packagesToChangePixelXL).contains(packageName)) {
