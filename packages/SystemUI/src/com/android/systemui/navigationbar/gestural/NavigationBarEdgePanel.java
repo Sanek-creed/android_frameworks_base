@@ -55,7 +55,7 @@ import com.android.systemui.Dependency;
 import com.android.systemui.R;
 import com.android.systemui.animation.Interpolators;
 import com.android.systemui.plugins.NavigationEdgeBackPlugin;
-//import com.android.systemui.statusbar.VibratorHelper;
+import com.android.systemui.statusbar.VibratorHelper;
 
 import java.io.PrintWriter;
 
@@ -133,7 +133,7 @@ public class NavigationBarEdgePanel extends View implements NavigationEdgeBackPl
             = new PathInterpolator(1.0f / RUBBER_BAND_AMOUNT_APPEAR, 1.0f, 1.0f, 1.0f);
 
     private final WindowManager mWindowManager;
-//    private final VibratorHelper mVibratorHelper;
+    private final VibratorHelper mVibratorHelper;
 
     /**
      * The paint the arrow is drawn with
@@ -284,7 +284,7 @@ public class NavigationBarEdgePanel extends View implements NavigationEdgeBackPl
         super(context);
 
         mWindowManager = context.getSystemService(WindowManager.class);
-//        mVibratorHelper = Dependency.get(VibratorHelper.class);
+        mVibratorHelper = Dependency.get(VibratorHelper.class);
 
         mDensity = context.getResources().getDisplayMetrics().density;
 
