@@ -26,36 +26,6 @@ LOCAL_REQUIRED_MODULES := \
         AndroidBlackThemeOverlay \
 	DisplayCutoutEmulationTallOverlay \
 	DisplayCutoutEmulationWaterfallOverlay \
-	IconPackCircularAndroidOverlay \
-	IconPackCircularLauncherOverlay \
-	IconPackCircularSettingsOverlay \
-	IconPackCircularSystemUIOverlay \
-	IconPackCircularThemePickerOverlay \
-	IconPackVictorAndroidOverlay \
-	IconPackVictorLauncherOverlay \
-	IconPackVictorSettingsOverlay \
-	IconPackVictorSystemUIOverlay \
-	IconPackVictorThemePickerOverlay \
-	IconPackSamAndroidOverlay \
-	IconPackSamLauncherOverlay \
-	IconPackSamSettingsOverlay \
-	IconPackSamSystemUIOverlay \
-	IconPackSamThemePickerOverlay \
-	IconPackKaiAndroidOverlay \
-	IconPackKaiLauncherOverlay \
-	IconPackKaiSettingsOverlay \
-	IconPackKaiSystemUIOverlay \
-	IconPackKaiThemePickerOverlay \
-	IconPackFilledAndroidOverlay \
-	IconPackFilledLauncherOverlay \
-	IconPackFilledSettingsOverlay \
-	IconPackFilledSystemUIOverlay \
-	IconPackFilledThemePickerOverlay \
-	IconPackRoundedAndroidOverlay \
-	IconPackRoundedLauncherOverlay \
-	IconPackRoundedSettingsOverlay \
-	IconPackRoundedSystemUIOverlay \
-	IconPackRoundedThemePickerOverlay \
 	NavigationBarMode3ButtonOverlay \
 	NavigationBarModeGesturalOverlay \
 	NavigationBarModeGesturalOverlayNarrowBack \
