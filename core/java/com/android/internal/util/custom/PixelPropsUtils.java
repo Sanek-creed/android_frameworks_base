@@ -31,11 +31,19 @@ public class PixelPropsUtils {
     public static final String PACKAGE_GMS = "com.google.android.gms";
     private static final String TAG = PixelPropsUtils.class.getSimpleName();
     private static final boolean DEBUG = false;
-    private static final String DEVICE = "ro.aex.device";
+    private static final String DEVICE = "ro.product.device";
 
     private static final Map<String, Object> propsToChangePixel6;
     private static final String[] packagesToChangePixel6 = {
-            "com.google.android.gms"
+            "com.google.android.apps.customization.pixel",
+            "com.google.android.apps.nexuslauncher",
+            "com.google.android.apps.subscriptions.red",
+            "com.google.android.apps.wallpaper",
+            "com.google.android.apps.wallpaper.pixel",
+            "com.google.android.settings.intelligence",
+            "com.google.pixel.dynamicwallpapers",
+            "com.google.pixel.livewallpaper",
+            PACKAGE_GMS
     };
 
     private static final Map<String, Object> propsToChangePixel5;
@@ -118,7 +126,7 @@ public class PixelPropsUtils {
         if (packageName == null){
             return;
         }
-        if (Arrays.asList(pixelCodenames).contains(SystemProperties.get(DEVICE).replace("aosp_", ""))) return;
+        if (Arrays.asList(pixelCodenames).contains(SystemProperties.get(DEVICE).replace("lineage_", ""))) return;
         if (packageName.equals(PACKAGE_GMS)) {
             sIsGms = true;
             setPropValue("TYPE", "userdebug");
