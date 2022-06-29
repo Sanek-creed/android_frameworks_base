@@ -25,9 +25,5 @@
 
     <bool name="flag_charging_ripple">false</bool>
 
-    <bool name="flag_smartspace">true</bool>
-
-    <!-- The shared-element transition between lockscreen smartspace and launcher smartspace. -->
-    <bool name="flag_smartspace_shared_element_transition">true</bool>
-
+    <bool name="flag_smartspace">false</bool>
 </resources>
