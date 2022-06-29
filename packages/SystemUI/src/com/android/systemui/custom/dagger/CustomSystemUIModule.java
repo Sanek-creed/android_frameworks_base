@@ -37,7 +37,7 @@ import com.android.systemui.recents.Recents;
 import com.android.systemui.recents.RecentsImplementation;
 import com.android.systemui.settings.UserContentResolverProvider;
 import com.android.systemui.statusbar.CommandQueue;
-import com.android.systemui.flags.FeatureFlags;
+import com.android.systemui.statusbar.FeatureFlags;
 import com.android.systemui.statusbar.NotificationLockscreenUserManager;
 import com.android.systemui.statusbar.NotificationLockscreenUserManagerImpl;
 import com.android.systemui.statusbar.NotificationMediaManager;
@@ -63,7 +63,6 @@ import com.android.systemui.statusbar.policy.IndividualSensorPrivacyControllerIm
 import com.android.systemui.statusbar.policy.NextAlarmController;
 import com.android.systemui.statusbar.policy.SensorPrivacyController;
 import com.android.systemui.statusbar.policy.SensorPrivacyControllerImpl;
-import com.android.systemui.volume.dagger.VolumeModule;
 import com.android.systemui.statusbar.policy.ZenModeController;
 import com.android.systemui.theme.ThemeOverlayController;
 import com.android.systemui.util.concurrency.DelayableExecutor;
@@ -82,8 +81,7 @@ import org.protonaosp.systemui.theme.CustomThemeOverlayController;
 
 @Module(includes = {
         MediaModule.class,
-        QSModule.class,
-        VolumeModule.class
+        QSModule.class
 })
 public abstract class CustomSystemUIModule {
 
@@ -193,13 +191,9 @@ public abstract class CustomSystemUIModule {
         return new Recents(context, recentsImplementation, commandQueue);
     }
 
-    @SysUISingleton
-    @Provides
-    static DeviceProvisionedController bindDeviceProvisionedController(
-            DeviceProvisionedControllerImpl deviceProvisionedController) {
-        deviceProvisionedController.init();
-        return deviceProvisionedController;
-    }
+    @Binds
+    abstract DeviceProvisionedController bindDeviceProvisionedController(
+            DeviceProvisionedControllerImpl deviceProvisionedController);
 
     @Binds
     abstract KeyguardViewController bindKeyguardViewController(
@@ -218,37 +212,29 @@ public abstract class CustomSystemUIModule {
     // Google
     @Provides
     @SysUISingleton
-    static SmartSpaceController provideSmartSpaceController(Context context, KeyguardUpdateMonitor updateMonitor,
-            Handler handler, AlarmManager am, DumpManager dm) {
+    static SmartSpaceController provideSmartSpaceController(Context context, KeyguardUpdateMonitor updateMonitor, Handler handler, AlarmManager am, DumpManager dm) {
         return new SmartSpaceController(context, updateMonitor, handler, am, dm);
     }
 
     @Provides
     @SysUISingleton
     static KeyguardSmartspaceController provideKeyguardSmartspaceController(Context context, FeatureFlags featureFlags,
-            KeyguardZenAlarmViewController keyguardZenAlarmViewController,
-            KeyguardMediaViewController keyguardMediaViewController) {
-        return new KeyguardSmartspaceController(context, featureFlags, keyguardZenAlarmViewController,
-                keyguardMediaViewController);
+            KeyguardZenAlarmViewController keyguardZenAlarmViewController, KeyguardMediaViewController keyguardMediaViewController) {
+        return new KeyguardSmartspaceController(context, featureFlags, keyguardZenAlarmViewController, keyguardMediaViewController);
     }
 
     @Provides
     @SysUISingleton
-    static KeyguardZenAlarmViewController provideKeyguardZenAlarmViewController(Context context,
-            BcSmartspaceDataPlugin bcSmartspaceDataPlugin, ZenModeController zenModeController,
+    static KeyguardZenAlarmViewController provideKeyguardZenAlarmViewController(Context context, BcSmartspaceDataPlugin bcSmartspaceDataPlugin, ZenModeController zenModeController,
             AlarmManager alarmManager, NextAlarmController nextAlarmController, Handler handler) {
-        return new KeyguardZenAlarmViewController(context, bcSmartspaceDataPlugin, zenModeController, alarmManager,
-                nextAlarmController, handler);
+        return new KeyguardZenAlarmViewController(context, bcSmartspaceDataPlugin, zenModeController, alarmManager, nextAlarmController, handler);
     }
 
     @Provides
     @SysUISingleton
-    static KeyguardMediaViewController provideKeyguardMediaViewController(Context context,
-            BcSmartspaceDataPlugin bcSmartspaceDataPlugin,
-            @Main DelayableExecutor delayableExecutor, NotificationMediaManager notificationMediaManager,
-            BroadcastDispatcher broadcastDispatcher) {
-        return new KeyguardMediaViewController(context, bcSmartspaceDataPlugin, delayableExecutor,
-                notificationMediaManager, broadcastDispatcher);
+    static KeyguardMediaViewController provideKeyguardMediaViewController(Context context, BcSmartspaceDataPlugin bcSmartspaceDataPlugin,
+            @Main DelayableExecutor delayableExecutor, NotificationMediaManager notificationMediaManager, BroadcastDispatcher broadcastDispatcher) {
+        return new KeyguardMediaViewController(context, bcSmartspaceDataPlugin, delayableExecutor, notificationMediaManager, broadcastDispatcher);
     }
 
     @Provides
